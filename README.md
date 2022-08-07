@@ -4,6 +4,9 @@ A collection of userscripts to improve the Monash University student Web experie
 Pull requests are welcome!
 
 ## Features
+### [Moodle](userscripts/moodle.user.js?raw=true)
+- Hide the copyright notice in page footers
+
 ### [Panopto](userscripts/panopto.user.js?raw=true)
 - Default quality selection
 - Full player UIs in Moodle
