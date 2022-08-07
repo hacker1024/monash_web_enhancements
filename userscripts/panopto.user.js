@@ -67,8 +67,11 @@
     if (window.location.host === 'monash.au.panopto.com' && (window.location.pathname.endsWith('Viewer.aspx') || window.location.pathname.endsWith('Embed.aspx'))) {
         // noinspection JSUnresolvedVariable
         const viewer = window.Panopto.viewer;
-        viewer.defaultMBRBitrate = defaultQuality;
-        viewer.defaultSSFBitrate = defaultQuality;
+        // noinspection PointlessBooleanExpressionJS, JSIncompatibleTypesComparison
+        if (defaultQuality !== null) {
+            viewer.defaultMBRBitrate = defaultQuality;
+            viewer.defaultSSFBitrate = defaultQuality;
+        }
         viewer.enableAutomaticLogsUpload = enableAutomaticLogsUpload;
         viewer.captionsEnabledByDefault = defaultEnableCaptions;
         viewer.showCopyrightNotice = !hideCaptionNotice;
