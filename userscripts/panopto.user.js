@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Panopto Patcher
-// @version      0.1.0
+// @version      0.1.1
 // @description  Adds various improvements to Panopto and Moodle.
 // @author       hacker1024
 // @homepageURL  https://github.com/hacker1024/monash_web_enhancements
@@ -8,6 +8,8 @@
 // @match        https://lms.monash.edu/*
 // @match        https://monash.au.panopto.com/Panopto/Pages/Viewer.aspx*
 // @match        https://monash.au.panopto.com/Panopto/Pages/Embed.aspx*
+// @match        https://monash-panopto.aarnet.edu.au/Panopto/Pages/Viewer.aspx*
+// @match        https://monash-panopto.aarnet.edu.au/Panopto/Pages/Embed.aspx*
 // @grant        none
 // ==/UserScript==
 
@@ -41,30 +43,37 @@
     const enableAutomaticLogsUpload = true;
 
     // PATCHES
+    const panoptoDomains = [
+        'monash.au.panopto.com',
+        'monash-panopto.aarnet.edu.au',
+    ];
 
     if (window.location.host === 'lms.monash.edu') {
-        const panoptoFrames = [];
-        const iframes = document.body.getElementsByTagName('iframe');
-        for (let i = 0; i < iframes.length; ++i) {
-            const iframe = iframes.item(i);
-            if (iframe.src.startsWith('https://monash.au.panopto.com/Panopto/Pages/Embed.aspx')) {
-                panoptoFrames.push(iframe);
+        const panoptoFrames = new Map();
+        for (const iframe of document.body.getElementsByTagName('iframe')) {
+            for (const panoptoDomain of panoptoDomains) {
+                if (iframe.src.startsWith(`https://${panoptoDomain}/Panopto/Pages/Embed.aspx`)) {
+                    panoptoFrames.set(iframe, panoptoDomain);
+                }
             }
         }
 
-        for (const panoptoFrame of panoptoFrames) {
+        for (const [panoptoFrame, panoptoDomain] of panoptoFrames) {
             if (resizePlayer) {
                 panoptoFrame.width = '100%';
                 panoptoFrame.height = 'auto';
                 panoptoFrame.style.aspectRatio = '16 / 10';
             }
             if (useFullPlayer) {
-                panoptoFrame.src = 'https://monash.au.panopto.com/Panopto/Pages/Viewer.aspx' + panoptoFrame.src.substring(54);
+                const videoBaseUrl = `https://${panoptoDomain}/Panopto/Pages`;
+                const videoEmbedUrl = panoptoFrame.src;
+                const videoViewUrl = `${videoBaseUrl}/Viewer.aspx${videoEmbedUrl.substring(`${videoBaseUrl}/Embed.aspx`.length)}`;
+                panoptoFrame.src = videoViewUrl;
             }
         }
     }
 
-    if (window.location.host === 'monash.au.panopto.com' && (window.location.pathname.endsWith('Viewer.aspx') || window.location.pathname.endsWith('Embed.aspx'))) {
+    if (panoptoDomains.includes(window.location.host) && (window.location.pathname.endsWith('Viewer.aspx') || window.location.pathname.endsWith('Embed.aspx'))) {
         // noinspection JSUnresolvedVariable
         const viewer = window.Panopto.viewer;
         // noinspection PointlessBooleanExpressionJS, JSIncompatibleTypesComparison
