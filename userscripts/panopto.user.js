@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Panopto Patcher
-// @version      0.1.1
+// @version      0.1.2
 // @description  Adds various improvements to Panopto and Moodle.
 // @author       hacker1024
 // @homepageURL  https://github.com/hacker1024/monash_web_enhancements
 // @iconURL      https://www.google.com/s2/favicons?sz=64&domain=monash.edu
+// @match        https://learning.monash.edu/*
 // @match        https://lms.monash.edu/*
 // @match        https://monash.au.panopto.com/Panopto/Pages/Viewer.aspx*
 // @match        https://monash.au.panopto.com/Panopto/Pages/Embed.aspx*
@@ -48,7 +49,7 @@
         'monash-panopto.aarnet.edu.au',
     ];
 
-    if (window.location.host === 'lms.monash.edu') {
+    if (window.location.host == "learning.monash.edu" || window.location.host === 'lms.monash.edu') {
         const panoptoFrames = new Map();
         for (const iframe of document.body.getElementsByTagName('iframe')) {
             for (const panoptoDomain of panoptoDomains) {
