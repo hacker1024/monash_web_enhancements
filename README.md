@@ -15,6 +15,7 @@ Pull requests are welcome!
 - Log upload blocking
 
 ### [Allocate+](userscripts/allocate_plus.user.js?raw=true)
+- Full width window
 - Bug fixes
 
 ## Installation and usage
