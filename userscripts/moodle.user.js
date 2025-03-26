@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Moodle Modifier
-// @version      0.1.0
+// @version      0.1.1
 // @description  Adds various improvements to Moodle.
 // @author       hacker1024
 // @homepageURL  https://github.com/hacker1024/monash_web_enhancements
 // @iconURL      https://www.google.com/s2/favicons?sz=64&domain=monash.edu
+// @match        https://learning.monash.edu/*
 // @match        https://lms.monash.edu/*
 // @grant        none
 // @run-at       document-end
@@ -29,6 +30,7 @@
     }
 
     // Hide the footer if it has no visible elements (otherwise, it will be visible due to padding).
+    // TODO: Handle tool_dataprivacy parent container on Moodle 4.x
     let footerPopulated = false;
     for (const footerElement of document.body.querySelectorAll('#page-footer .footer-container > :not(script)')) {
         if (footerElement.style.display !== 'none') {
