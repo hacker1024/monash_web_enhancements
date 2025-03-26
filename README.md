@@ -6,6 +6,7 @@ Pull requests are welcome!
 ## Features
 ### [Moodle](userscripts/moodle.user.js?raw=true)
 - Hide the copyright notice in page footers
+- Fix unit dashboard link semantics
 
 ### [Panopto](userscripts/panopto.user.js?raw=true)
 - Default quality selection
